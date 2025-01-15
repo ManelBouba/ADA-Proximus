@@ -10,11 +10,10 @@ import os
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Configure Gemini AI API
-genai.configure(api_key="AIzaSyBt8v8m6mwV6ntCktbNs5eZo0IAtehPDPs")  # Replace with your Gemini API key
+genai.configure(api_key="")  # Replace with your Gemini API key
 
 # GoPhish API key
-api = Gophish("b12fd791fccdd6638386c79928ebfbb58b9610ada42a1026c3197566b98ea091", verify=False)
-
+api = Gophish("", verify=False)
 
 # Awareness Training Scenarios
 training_examples = [
@@ -30,7 +29,7 @@ sending_profile_data = SMTP(
     reply_to_address="manelboubakeur1992@gmail.com",  # Replace with your email address
     host="smtp.gmail.com",  # Replace with your SMTP server host
     username="manelboubakeur1992@gmail.com",  # Replace with your SMTP username
-    password="exab rkzi vjaz ffka",  # Replace with your SMTP password
+    password="",  # Replace with your SMTP password
     port=587,  # SMTP port (use 465 for SSL, 587 for TLS)
     tls=True,  # Use TLS if needed
     ssl=False,  # Use SSL if needed
@@ -46,7 +45,7 @@ landing_page_data = Page(
 # Generate a Training Email using Gemini AI
 def generate_training_email():
     random_pick = random.choice(training_examples)
-    prompt = f"""Write a professional email for cybersecurity training on the topic: {random_pick['Reason']}.
+    prompt = f"""Write a professional email for cybersecurity training on the topic: {random_pick['Reason']}.\n
     Include this link for further reading: {random_pick['Educational Link']}."""
 
     # Generate Email Body
@@ -74,23 +73,23 @@ def generate_training_email():
 def create_sending_profile():
     try:
         smtp = api.smtp.post(sending_profile_data)
-        print(f"Sending Profile Created: {smtp.name}")
-        return smtp.id  # Return the SMTP profile ID
+        print(f"SMTP Sending Profile created: {smtp.name}")
+        return smtp.id  # Return the ID of the created SMTP object
     except Exception as e:
-        print(f"Error creating sending profile: {e}")
+        print(f"Error creating SMTP profile: {e}")
         return None
 
 # Create Landing Page
 def create_landing_page():
     try:
         landing_page = api.pages.post(landing_page_data)
-        print(f"Landing Page Created: {landing_page.name}")
-        return landing_page.id  # Return the landing page ID
+        print(f"Landing Page created: {landing_page.name}")
+        return landing_page.id  # Return the ID of the created landing page
     except Exception as e:
         print(f"Error creating landing page: {e}")
         return None
 
-# Function to create a new template
+# Create Email Template
 def create_email_template(subject, body):
     if not subject or not body:
         print("Error: Subject or body is empty. Cannot create email template.")
@@ -112,36 +111,40 @@ def create_email_template(subject, body):
         # Post the template to GoPhish
         template = api.templates.post(template_data)
 
-        print(f"Template Created: {template.name}")
-        print(f"Template ID: {template.id}")
-        return template.id  # Return the template ID
+        print(f"Email Template created: {template.name}")
+        return template.id  # Return the ID of the created template
     except Exception as e:
-        print(f"Error creating template: {e}")
+        print(f"Error creating email template: {e}")
         return None
 
-# Create Group with Users
-def create_group():
+# Create Group with Employees (with position)
+def create_group(employees):
     try:
+        # Create the user data list, including position
         user_data = [
             User(
-                first_name="John",
-                last_name="Doe",
-                email="manelbouman@gmail.com"
-            )
+                first_name=emp["first_name"], 
+                last_name=emp["last_name"], 
+                email=emp["email"],
+                position=emp["position"]  # Add position
+            ) for emp in employees
         ]
-        
+
+        # Create the group data
         group_data = Group(
-            name="Cybersecurity Training Group",
-            targets=user_data  # Add the user to the group
+            name="Employee Group",
+            targets=user_data  # Add users to the group
         )
-        
+
+        # Post the group to GoPhish
         group = api.groups.post(group_data)
-        print(f"Group Created: {group.name} with ID: {group.id}")
-        return group.id  # Return the group ID
+
+        print(f"Group created: {group.name}")
+        return group.id  # Return the ID of the created group
     except Exception as e:
         print(f"Error creating group: {e}")
         return None
-
+    
 # Create Campaign
 def create_campaign(template_id, sending_profile_id, landing_page_id, group_id):
     if not template_id or not sending_profile_id or not landing_page_id or not group_id:
@@ -151,19 +154,46 @@ def create_campaign(template_id, sending_profile_id, landing_page_id, group_id):
         return None
 
     try:
+        # Fetch the Template by ID
+        template = api.templates.get(template_id)
+        if not template:
+            print(f"Error: Template with ID {template_id} not found.")
+            return None
+        
+        # Fetch the SMTP Profile by ID
+        smtp = api.smtp.get(sending_profile_id)
+        if not smtp:
+            print(f"Error: SMTP profile with ID {sending_profile_id} not found.")
+            return None
+        
+        # Fetch the Landing Page by ID
+        landing_page = api.pages.get(landing_page_id)
+        if not landing_page:
+            print(f"Error: Landing page with ID {landing_page_id} not found.")
+            return None
+        
+        # Fetch the Group by ID
+        group = api.groups.get(group_id)
+        if not group:
+            print(f"Error: Group with ID {group_id} not found.")
+            return None
+
+        # Create the campaign using the fetched objects
         campaign_data = Campaign(
             name="Cybersecurity Awareness Campaign",
-            #template=Template(id=template_id),
-            template=Template(name='Cybersecurity Awareness Template'),
-            smtp=SMTP(name="Training Sending Profile"),
-            page=Page(name="Training Landing Page"),
+            template=template,  # Use the fetched template object
+            smtp=smtp,  # Use the fetched SMTP profile
+            page=landing_page,  # Use the fetched landing page
             url="https://localhost:3333/landing_pages",
-            groups=[Group(name="Cybersecurity Training Group")],
+            groups=[group],  # Use the fetched group
         )
+
+        # Post the campaign to GoPhish
         campaign = api.campaigns.post(campaign_data)
         print(f"Campaign Created: {campaign.name}")
         print(f"Campaign ID: {campaign.id}")
         return campaign.id  # Return the campaign ID
+
     except Exception as e:
         print(f"Error creating campaign: {e}")
         return None
@@ -182,11 +212,13 @@ def main():
         print("Failed to create sending profile. Exiting.")
         return
 
-    # Step 3: Create Landing Page
-    landing_page_id = create_landing_page()
-    if not landing_page_id:
+    # Step 3: Create Landing Page and get phishing server link
+    landing_page = create_landing_page()
+    if not landing_page:
         print("Failed to create landing page. Exiting.")
         return
+    phishing_server_link = landing_page.url  # Get phishing server link
+    print(f"Phishing server link: {phishing_server_link}")  # Print the URL
 
     # Step 4: Create Email Template
     template_id = create_email_template(subject, body)
@@ -194,14 +226,19 @@ def main():
         print("Failed to create email template. Exiting.")
         return
 
-    # Step 5: Create Group
-    group_id = create_group()
+    # Step 5: Create Group with Employees (Including positions)
+    employees = [
+        {"first_name": "John", "last_name": "Doe", "email": "wvaleaseabike@gmail.com", "position": "Manager"},
+        {"first_name": "Jane", "last_name": "Smith", "email": "vandevelde.jan09@gmail.co", "position": "Developer"},
+        {"first_name": "Mark", "last_name": "Taylor", "email": "manelbouman@gmail.com", "position": "Designer"}
+    ]
+    group_id = create_group(employees)
     if not group_id:
         print("Failed to create group. Exiting.")
         return
 
     # Step 6: Create Campaign
-    campaign_id = create_campaign(template_id, sending_profile_id, landing_page_id, group_id)
+    campaign_id = create_campaign(template_id, sending_profile_id, landing_page.id, group_id)
     if campaign_id:
         print(f"Campaign successfully created with ID: {campaign_id}")
     else:
@@ -210,3 +247,4 @@ def main():
 # Run the Main Workflow
 if __name__ == "__main__":
     main()
+
