@@ -256,10 +256,21 @@ def main():
 
     # Step 5: Create Group with Employees (Including positions)
     employees = [
-        {"first_name": "John", "last_name": "Doe", "email": "wvaleaseabike@gmail.com", "position": "Manager"},
-        {"first_name": "Jane", "last_name": "Smith", "email": "vandevelde.jan09@gmail.co", "position": "Developer"},
-        {"first_name": "Mark", "last_name": "Taylor", "email": "manelbouman@gmail.com", "position": "Designer"}
-    ]
+    {"first_name": "John", "last_name": "Doe", "email": "wvaleaseabike@gmail.com", "position": "Manager"},
+    {"first_name": "Jane", "last_name": "Smith", "email": "vandevelde.jan09@gmail.co", "position": "Developer"},
+    {"first_name": "Mark", "last_name": "Taylor", "email": "manelbouman@gmail.com", "position": "Designer"},
+    {"first_name": "Wout", "last_name": "Van Aert", "email": "wout.vanaert.visma@proton.me", "position": "Contact Center Agent"},
+    {"first_name": "Remco", "last_name": "Evenepoel", "email": "remco.evenepoel.soudal@proton.me", "position": "Customer Service Specialist"},
+    {"first_name": "Tadej", "last_name": "Pogacar", "email": "tadej.pogacar.uae@proton.me", "position": "Sales Advisor"},
+    {"first_name": "Arnaud", "last_name": "De Lie", "email": "arnaud.de.lie.lotto@proton.me", "position": "B2B Sales Representative"},
+    {"first_name": "Mathieu", "last_name": "Van Der Poel", "email": "mathieu.vanderpoel.alpecin@proton.me", "position": "Senior Legal Advisor"},
+    {"first_name": "Julian", "last_name": "Alaphilippe", "email": "julian.alaphilippe.tudor@proton.me", "position": "Payroll Officer"},
+    {"first_name": "Tom", "last_name": "Pidcock", "email": "tom.pidcock.q365@proton.me", "position": "Compensation & Benefits Specialist"},
+    {"first_name": "Ben", "last_name": "O'Connor", "email": "ben.oconnor.decathlon@proton.me", "position": "Finance Business Partner"},
+    {"first_name": "Jonas", "last_name": "Vingegaard", "email": "jonas.vinegegaard.visma@proton.me", "position": "Finance Specialist"},
+    {"first_name": "Victor", "last_name": "Campenaerts", "email": "victor.campenaerts@proton.me", "position": "Technical Dispatching"}
+]
+
     group_id = create_group(employees)
     if not group_id:
         logging.error("Failed to create group. Exiting.")
