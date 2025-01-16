@@ -1,13 +1,13 @@
 
 {
-    "gemini_api_key": "",
-    "gophish_api_key": "",
+    "gemini_api_key": "AIzaSyAkkEh_kk_MXj1RHobctfZaXLY0ZsaNErk",
+    "gophish_api_key": "e75f4ba67a56f495de158036b4c16107e27807d2abe59d4f917566a708b519a8",
     "smtp": {
-      "username": "",
-      "password": "",
-      "from_address": "",
+      "username": "wvaleaseabike@gmail.com",
+      "password": "lqin rihw ixuq dvuc",
+      "from_address": "wvaleaseabike@gmail.com",
       "from_name": "Cybersecurity Trainer",
-      "reply_to_address": "",
+      "reply_to_address": "wvaleaseabike@gmail.com",
       "host": "smtp.gmail.com",
       "port": 587,
       "tls": true,
