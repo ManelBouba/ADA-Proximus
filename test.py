@@ -32,8 +32,12 @@ api = Gophish(config['gophish_api_key'], verify=False)
 
 # Awareness Training Scenarios
 training_examples = [
-    {"Reason": "Password Security Awareness", "Educational Link": "https://example.com/security-tips"},
-    {"Reason": "Recognizing Phishing Emails", "Educational Link": "https://example.com/phishing-tips"},
+    {"Reason": "Account Suspicious Activity", "Educational Link": "http://landing-page.com", "Created By": "Sam Sussy", "id" : " 1"},
+    {"Reason": "Password Expiry Notification", "Educational Link": "http://landing-page.com", "Created By": "Sally Sneaky", "id" : "2"},
+    {"Reason": "Exclusive Training Webinar", "Educational Link": "http://landing-page.com", "Created By": "Richard Rascal", "id" : "3"},
+    {"Reason": "Email Storage Full", "Educational Link": "http://landing-page.com", "Created By": "Bernard Bandit", "id" : "4"},
+    {"Reason": "Team Gathering Invitation", "Educational Link": "http://landing-page.com", "Created By": "Paul Ploy", "id" : "6"},
+    {"Reason": "Upcoming Meeting Notice", "Educational Link": "http://landing-page.com", "Created By": "Olivia Opportunist", "id" : "7"},
 ]
 
 # SMTP Sending Profile Data
@@ -60,10 +64,15 @@ landing_page_data = Page(
 # Generate a more convincing Training Email using Gemini AI
 def generate_training_email():
     random_pick = random.choice(training_examples)
-    prompt = f"""Write a professional email for cybersecurity training on the topic: {random_pick['Reason']}.\n
-    The email should be convincing and include this link for further reading: {random_pick['Educational Link']}.\n
-    Use a friendly yet authoritative tone, and ensure that the reader feels compelled to take the course for their own security."""
-    
+    prompt = f"""Write an email following those constraints:
+    The sender who signs is {random_pick['Created By']}
+    The email should be about the theme: {random_pick["Reason"]}.
+    The email should:
+    * Sound professional, persuasive, and engaging
+    * Be free of placeholders like '[Date and Time]' or '[Target Audience]' or ['Date'], if talking about time, use 'next week'.
+    * Be completely free of any placeholders or brackets (e.g., '[]','()').
+    * Appear ready to be sent immediately.
+    Provide the email content directly. Do not include any additional instructions or formatting"""
     # Generate Email Body
     try:
         email_body_response = genai.GenerativeModel("gemini-pro").generate_content(prompt)
@@ -109,6 +118,7 @@ def create_landing_page():
         landing_page = api.pages.post(landing_page_data)
         logging.info(f"Landing Page created: {landing_page.name}")
         return landing_page  # Return the full landing page object, not just the ID
+        print(landing_page)
     except Exception as e:
         logging.error(f"Error creating landing page: {e}")
         return None
