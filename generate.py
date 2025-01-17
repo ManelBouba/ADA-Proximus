@@ -27,6 +27,7 @@ config = load_config()
 
 genai.configure(api_key=config["gemini_api_key"])
 
+# Example training examples for generating emails
 training_examples = [
     # {
     #     "Reason": "New Year opening party, hosted in Brussels offices, on 23th of January 2025, RSVP on  link",
@@ -40,6 +41,13 @@ training_examples = [
         "Created By": "Thomas Merlier",
         "Company" : "Beautiful Sports",
         "id": "company_league"
+    },
+    {
+        "Reason": "Register for our workshop, the topic of the training is Unconscious Bias Awareness",
+        "Educational Link": "http://landing-page.com",
+        "Created By": "Thomas Merlier",
+        "Company" : "Proximus",
+        "id": "Proximus"
     }
 ]
 
