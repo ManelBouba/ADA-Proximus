@@ -33,17 +33,17 @@ genai.configure(api_key=config["gemini_api_key"])
 api = Gophish(config["gophish_api_key"], verify=False)
 
 
-# Load HTML and replace placeholders
 def load_html_with_placeholder(file_path, placeholder_dict):
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             html_content = file.read()
             for placeholder, value in placeholder_dict.items():
-                html_content = html_content.replace(f"{{{placeholder}}}", value)
+                html_content = html_content.replace(f"{{{{{placeholder}}}}}", value)
             return html_content
     except Exception as e:
         logging.error(f"Error loading HTML file {file_path}: {e}")
         return None
+
 
 
 # Awareness Training Scenarios
@@ -112,7 +112,7 @@ def create_sending_profile():
         return None
 
 
-# Create Landing Page
+# Create Landing Page with full attributes
 def create_landing_page():
     phishing_link = config["phishing_link"]
     landing_page_html = load_html_with_placeholder("landing_page.html", {"Tracker": phishing_link})
@@ -124,8 +124,10 @@ def create_landing_page():
     try:
         landing_page_data = Page(
             name="Training Landing Page",
-            url=config["landing_page_url"],
             html=landing_page_html,
+            capture_credentials=True,  # Capture submitted credentials
+            capture_passwords=True,  # Capture passwords as well
+            redirect_url=phishing_link  # Redirect after submission
         )
         landing_page = api.pages.post(landing_page_data)
         logging.info(f"Landing Page created: {landing_page.name}")
@@ -135,7 +137,6 @@ def create_landing_page():
         return None
 
 
-# Create Email Template
 def create_email_template(subject, body):
     phishing_link = config["phishing_link"]
     email_template_html = load_html_with_placeholder(
@@ -190,7 +191,7 @@ def create_campaign(template_id, sending_profile_id, landing_page_id, group_id):
             smtp=api.smtp.get(sending_profile_id),
             page=api.pages.get(landing_page_id),
             groups=[api.groups.get(group_id)],
-            url=config["landing_page_url"],
+            url=config["phishing_link"],
             track_opens=True,
             track_clicks=True,
         )
@@ -223,9 +224,8 @@ def main():
         return
 
     employees = [
-        {"first_name": "John", "last_name": "Doe", "email": "wvaleaseabike@gmail.com", "position": "Manager"},
-        {"first_name": "Jane", "last_name": "Smith", "email": "vandevelde.jan09@gmail.com", "position": "Developer"},
-        {"first_name": "Mark", "last_name": "Taylor", "email": "manelbouman@gmail.com", "position": "Designer"}
+        {"first_name": "John", "last_name": "Doe", "email": "slhhamed@hotmail.com", "position": "Manager"},
+        {"first_name": "Mark", "last_name": "Taylor", "email": "manelboubakeur1992@gmail.com", "position": "Designer"}
     ]
     group_id = create_group(employees)
     if not group_id:

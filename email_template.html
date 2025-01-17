@@ -3,48 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Template</title>
+    <title>DocuSign Signature Request</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .email-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
+        .container {
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
-        h1 {
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 150px;
+        }
+        .message {
+            font-size: 18px;
             color: #333333;
+            margin-bottom: 20px;
         }
-        p {
-            color: #666666;
-            line-height: 1.6;
-        }
-        .button {
+        .button:link, .button:visited {
             display: inline-block;
-            margin-top: 20px;
-            padding: 12px 24px;
-            background-color: #5C2D91;
+            padding: 10px 20px;
+            font-size: 16px;
             color: #ffffff;
+            background-color: #0072c6;
             text-decoration: none;
-            font-weight: bold;
             border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #005b99;
         }
     </style>
 </head>
 <body>
-    <div class="email-container">
-        <h1>Cybersecurity Training Invitation</h1>
-        <p>{body}</p>
-        <a class="button" href="{phishing_link}" target="_blank">Start Training</a>
+    <div class="container">
+        <div class="logo">
+            <img src="https://images.ctfassets.net/3fcisxc3a6xz/docusign_logo_black_text_on_white_0.png/90872cd475f92acafc7c490c93976e40/ds-logo-on-white.png" alt="Logo DocuSign">
+
+
+        </div>
+        <div class="message">
+            You have a new signature request via DocuSign.
+        </div>
+        <a href={{.URL}} class="button">Review and Sign</a>
     </div>
     <p>{{.Tracker}}</p>
 </body>

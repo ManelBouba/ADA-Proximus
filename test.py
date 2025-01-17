@@ -6,6 +6,7 @@ import urllib3
 import json
 import os
 import logging
+import time
 
 # Suppress HTTPS warnings for local testing (use only for local dev)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -29,7 +30,16 @@ genai.configure(api_key=config['gemini_api_key'])
 
 # GoPhish API key
 api = Gophish(config['gophish_api_key'], verify=False)
-
+def load_html_with_placeholder(file_path, placeholder_dict):
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            html_content = file.read()
+            for placeholder, value in placeholder_dict.items():
+                html_content = html_content.replace(f"{{{{{placeholder}}}}}", value)
+            return html_content
+    except Exception as e:
+        logging.error(f"Error loading HTML file {file_path}: {e}")
+        return None
 # Awareness Training Scenarios
 training_examples = [
     {"Reason": "Password Security Awareness", "Educational Link": "https://example.com/security-tips"},
@@ -53,7 +63,7 @@ sending_profile_data = SMTP(
 # Landing Page Data
 landing_page_data = Page(
     name="Training Landing Page",
-    url=config['landing_page_url'],  # Load from config
+    #url=config['landing_page_url'],  # Load from config
     html=""  # Can be updated with the actual HTML content if needed
 )
 
@@ -103,12 +113,26 @@ def create_sending_profile():
         logging.error(f"Error creating SMTP profile: {e}")
         return None
 
-# Create Landing Page
+# Create Landing Page with full attributes
 def create_landing_page():
+    phishing_link = config["phishing_link"]
+    landing_page_html = load_html_with_placeholder("landing_page.html", {"Tracker": phishing_link})
+
+    if not landing_page_html:
+        logging.error("Landing page HTML could not be loaded. Exiting.")
+        return None
+
     try:
+        landing_page_data = Page(
+            name="Training Landing Page",
+            html=landing_page_html,
+            capture_credentials=True,  # Capture submitted credentials
+            capture_passwords=True,  # Capture passwords as well
+            redirect_url=phishing_link  # Redirect after submission
+        )
         landing_page = api.pages.post(landing_page_data)
         logging.info(f"Landing Page created: {landing_page.name}")
-        return landing_page  # Return the full landing page object, not just the ID
+        return landing_page
     except Exception as e:
         logging.error(f"Error creating landing page: {e}")
         return None
@@ -121,7 +145,7 @@ def create_email_template(subject, body, phishing_link):
 
     try:
         # Define the HTML and Text content for the email with more convincing language
-        html_content = f"""<html><body><p>{body}</p><br><p><a href="{phishing_link}">Click here</a> to learn more and protect your organization.</p></body></html>"""
+        html_content = f"""<html><body><p>{body}</p><br><p><a href={{.URL}}>Click here</a> to learn more and protect your organization.</p></body></html>"""
         text_content = f"{body}\n\nClick here: {phishing_link}"
 
         # Create the template object
@@ -208,7 +232,7 @@ def create_campaign(template_id, sending_profile_id, landing_page_id, group_id):
             template=template,  # Use the fetched template object
             smtp=smtp,  # Use the fetched SMTP profile
             page=landing_page,  # Use the fetched landing page
-            url=config['landing_page_url'],  # Use config URL for landing page
+            url=config['phishing_link'],  # Use config URL for landing page
             groups=[group],  # Use the fetched group
             track_opens=True,  # Track email opens
             track_clicks=True,  # Track link clicks
@@ -245,7 +269,7 @@ def main():
         return
 
     # Construct phishing server link using landing page ID
-    phishing_server_link = f"{config['go_phish_server_url']}/p/{landing_page.id}"
+    phishing_server_link = f"{config['landing_page_url']}"
     logging.info(f"Phishing server link: {phishing_server_link}")
     
     # Step 4: Create Email Template with phishing link
@@ -256,8 +280,7 @@ def main():
 
     # Step 5: Create Group with Employees (Including positions)
     employees = [
-        {"first_name": "John", "last_name": "Doe", "email": "wvaleaseabike@gmail.com", "position": "Manager"},
-        {"first_name": "Jane", "last_name": "Smith", "email": "vandevelde.jan09@gmail.co", "position": "Developer"},
+        {"first_name": "John", "last_name": "Doe", "email": "slhhamed@hotmail.com", "position": "Manager"},
         {"first_name": "Mark", "last_name": "Taylor", "email": "manelbouman@gmail.com", "position": "Designer"}
     ]
     group_id = create_group(employees)
@@ -271,6 +294,9 @@ def main():
         logging.info(f"Campaign successfully created with ID: {campaign_id}")
     else:
         logging.error("Failed to create campaign.")
+
+    # Optional: Add a delay to avoid hitting rate limits on the server
+    time.sleep(2)  # Add sleep time between campaign creations to respect rate limits
 
 # Run the Main Workflow
 if __name__ == "__main__":
