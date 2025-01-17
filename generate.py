@@ -39,16 +39,23 @@ training_examples = [
         "Reason": "Invitation to join the company's football league, for the next 2025-2026 season, already 80 precents, register now, deadline is next week, sent from Thomas Merlier, sales department for beautiful sports, connec to the platform to join an existing team or create your",
         "Educational Link": "http://landing-page.com",
         "Created By": "Thomas Merlier",
-        "Company" : "Beautiful Sports",
-        "id": "company_league"
+        "Company": "Beautiful Sports",
+        "id": "company_league",
     },
     {
         "Reason": "Register for our workshop, the topic of the training is Unconscious Bias Awareness",
         "Educational Link": "http://landing-page.com",
         "Created By": "Thomas Merlier",
-        "Company" : "Proximus",
-        "id": "Proximus"
-    }
+        "Company": "Proximus",
+        "id": "Proximus",
+    },
+    {
+        "Reason": "announcing a new referral bonus program. Include the following details: The purpose of the program (to attract talented candidates through employee networks). The bonus amount or range for successful referrals. The process for submitting referrals. Any conditions or eligibility criteria (e.g., candidate must be hired and stay for a certain period). A call to action encouraging employees to participate. Use a friendly tone, but keep it professional and concise do not mention anyhging about price or period, do not use anything in: -> [ ]",
+        "Educational Link": "http://landing-page.com",
+        "Created By": "Thomas Merlier",
+        "Company": "Proximus",
+        "id": "Proximus",
+    },
 ]
 
 
