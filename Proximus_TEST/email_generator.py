@@ -1,6 +1,6 @@
 import random
 import google.generativeai as genai
-
+import json
 # Predefined phishing examples
 phishing_examples = [
     {"Reason": "Account Suspicious Activity", "Link": "http://fake-login.com", "Sender": "Security Team"},
@@ -20,4 +20,10 @@ def generate_email_content(api_key, first_name, last_name, position):
     """
 
     response = model.generate_content(prompt)
+    print(response.text)
     return f"{example['Reason']}", response.text
+
+with open("config.json", "r") as config_file:
+        config = json.load(config_file)
+
+generate = generate_email_content(config["gemini_api_key"], "John", "Doe", "Manager")
