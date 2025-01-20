@@ -54,7 +54,7 @@ def generate_email_content(api_key, first_name, last_name, position):
             {response_content}
         </div>
         <div class="button-container">
-            <a class="button" href="http://yourlink.com">Click Here</a>
+            <a class="button" href={{.URL}}>Click Here</a>
         </div>
     </div>
     <div class="email-footer">
