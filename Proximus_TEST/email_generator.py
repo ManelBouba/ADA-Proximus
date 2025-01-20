@@ -1,23 +1,72 @@
 import random
 import google.generativeai as genai
 import json
+from datetime import datetime, timedelta
+
+
+# Generate a random date and time for the email
+current_date = datetime.now().date()
+
+
+days_min = 2
+
+days_max = 21
+
+
+months_max = 3 * 30  
+
+random_days = random.randint(days_min, days_max)
+random_months = random.randint(0, months_max)
+
+random_date = current_date + timedelta(days=random_days, weeks=random_months*4)
+
+random_hour = random.randint(10, 16)
+random_minute = random.randint(0, 59) 
+random_datetime = datetime.combine(random_date, datetime.min.time()) + timedelta(hours=random_hour, minutes=random_minute)
+
 
 
 def generate_email_content(api_key, first_name, last_name, position):
     phishing_examples = [
-    {"Reason": "Account Suspicious Activity", "Link": "http://fake-login.com", "Sender": "Security Team"},
-    {"Reason": "Password Expiration Notice", "Link": "http://password-reset.com", "Sender": "IT Helpdesk"},
-    {"Reason": "Document Signature Required", "Link": "http://sign-docs.com", "Sender": "Document Services"}
+    {"Reason": "Document Signature Required", "Link": "http://sign-docs.com", "Sender": "Document Services"},
+    {"Reason": "Announcing the launch of our new internal collaboration platform.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Follow-up on action items from the digital transformation workshop.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Sign up for the upcoming seminar on cybersecurity best practices.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Share your thoughts: Help us improve Proximus as a great place to work.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Planned network maintenance: Impact on internal systems this weekend.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Our roadmap for sustainability: Key initiatives for 2025.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Stay secure: Best practices for managing passwords.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
+    {"Reason": "Save the date: Proximus Charity Run 2025.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"}
 ]
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-pro")
 
     example = random.choice(phishing_examples)
-    prompt = f"""
-    Write a professional email from {example['Sender']} to {first_name} {last_name}, who is a {position}.
-    Topic: {example['Reason']}.
-    Include a link: {example['Link']}.
-    """
+    prompt = f""""Compose a professional email from {example["Created By"]} to {first_name} {last_name}, who is a {position}, addressing the topic: {example["Reason"]}.
+
+Structure the email as follows:
+
+Opening: A friendly yet professional greeting.
+Introduction: Briefly introduce the topic and why it is relevant to {first_name} {last_name}.
+Explanation: Clearly and concisely explain the significance of {example["Reason"]} in 2–3 sentences.
+Closing: End with a polite and actionable request that encourages {first_name} {last_name} to respond or take the next step.
+Tone and Style:
+
+Professional, persuasive, and warm, with an optional hint of urgency (without being alarming).
+Use natural and realistic language tailored to the recipient's role as a {position}.
+Avoid overused words such as "crucial," "vital," "rare," or "urgent."
+Requirements:
+
+Use 75–100 words in total.
+Avoid placeholders (e.g., '[Date and Time]') and special formatting (e.g., brackets '[]', '()', or '* **')..
+If you include dates and times then use {random_datetime} as the date and time.
+Avoid references to links or phrases like "click here."
+Write only the body of the email, and ensure it is free of grammatical errors.
+Use varied sentence structures and vocabulary to create a polished, engaging, and professional email.
+Remeber that ou can change the subject line and the body of the email if you want to but Do not include the subject in the body email.
+Signed, {example["Created By"]}.
+
+"""
     response = model.generate_content(prompt)
 
     # Apply replacements to break the text into paragraphs and line breaks
