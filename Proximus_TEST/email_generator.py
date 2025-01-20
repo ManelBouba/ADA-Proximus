@@ -69,7 +69,7 @@ def generate_email_content(api_key, first_name, last_name, position):
     html_content = html_template.replace("{response_content}", response_text)
 
     # Print or save the final HTML
-    print(html_content)
+    return html_content
 
 with open("config.json", "r") as config_file:
         config = json.load(config_file)
