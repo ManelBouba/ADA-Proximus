@@ -66,10 +66,10 @@ def generate_email_content(api_key, first_name, last_name, position):
     """
 
     # Insert the formatted content into the HTML template
-    html_content = html_template.replace("{response_content}", response_text)
+    html_email = html_template.replace("{response_content}", response_text)
+    subject =example['Reason']
+    return html_email, subject
 
-    # Print or save the final HTML
-    return html_content
 
 with open("config.json", "r") as config_file:
         config = json.load(config_file)
