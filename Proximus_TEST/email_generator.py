@@ -36,7 +36,7 @@ def generate_email_content(api_key, first_name, last_name, position):
     {"Reason": "Planned network maintenance: Impact on internal systems this weekend.", "Detailed_reason": "","Sender": "Vera"},
     {"Reason": "Our roadmap for sustainability: Key initiatives for 2025.", "Detailed_reason": "","Sender": "Vera"},
     {"Reason": "Stay secure: Best practices for managing passwords.", "Detailed_reason": "","Sender": "Vera"},
-    {"Reason": "Save the date: Proximus Charity Run 2025.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Save the date: Proximus Charity Run 2025.", "Detailed_reason": "Charity run organised by the receiver's employer which is Proximus","Sender": "Vera"},
     {"Reason": "Save the date: Proximus Tour de Namur Cyclo 2025.", "Detailed_reason": "As a proximus employee, you can take part to this sport event for free","Sender": "Vera"}
 ]
     genai.configure(api_key=api_key)
