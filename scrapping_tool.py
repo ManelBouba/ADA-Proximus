@@ -8,14 +8,14 @@ def search_google(query, api_key, num_results=50):
     page = search.get_dict()
     
     while len(results) < num_results and page:
-        # Add all organic results with their full content
+        # organic results are the little cards that appear in the search
         if "organic_results" in page:
             results.extend(page["organic_results"])  # Collect all fields in each organic result
 
         # Check if there's a next page link
         next_page = page.get("serpapi_pagination", {}).get("next")
         if next_page:
-            search.params_dict.update({"start": len(results)})  # Update the start parameter for pagination
+            search.params_dict.update({"start": len(results)}) 
             page = search.get_dict()
         else:
             break  # Exit loop if no more pages
