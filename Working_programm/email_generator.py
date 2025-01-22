@@ -1,6 +1,5 @@
 import random
 import google.generativeai as genai
-import json
 from datetime import datetime, timedelta
 
 

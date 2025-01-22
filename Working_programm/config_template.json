@@ -1,0 +1,8 @@
+{
+    "GOPHISH_API_KEY": "",
+    "GEMINI_API_KEY": "",
+    "email_pass": "",
+    "email_address": "",
+    "host": "e.g. smtp.gmail.com:587",
+    "port": 587
+}
