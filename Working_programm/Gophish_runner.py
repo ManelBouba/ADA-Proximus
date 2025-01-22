@@ -1,5 +1,6 @@
 from gophish import Gophish
 from gophish.models import SMTP, Page, Template, Campaign, User, Group
+import pandas as pd
 import json
 
 #with open('config.json', 'r') as f:
@@ -14,6 +15,7 @@ class Gophish_Runner:
         self.host = config["host"]
         self.port = config["port"]
         self.gophish_api = Gophish(self.GOPHISH_API_KEY, verify=False)
+        self.results = None
 
     def create_sending_profile(self, name):    
         sending_profile = SMTP(
@@ -90,5 +92,17 @@ class Gophish_Runner:
         for campaign in self.gophish_api.campaigns.get():
             self.gophish_api.campaigns.delete(campaign.id)
 
+    def get_results(self):
+        self.results = None
+        results_list = []
+        for campaign in self.gophish_api.campaigns.get():
+            res = campaign.results[0]
+            results_list.append([res.first_name, res.last_name, res.position, res.status])
+        df = pd.DataFrame(results_list, columns=['first_name', 'last_name', 'position', 'status'])
+        
+        self.results = df
+
+    def export_results(self, file_name='results.csv'):
+        self.results.to_csv(file_name, index=False)
 
     
