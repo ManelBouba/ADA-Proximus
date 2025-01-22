@@ -124,4 +124,4 @@ Signed, {example["Created By"]}.
 with open("config.json", "r") as config_file:
         config = json.load(config_file)
 
-generate = generate_email_content(config["gemini_api_key"], "John", "Doe", "Manager")
+generate = generate_email_content(config["GEMINI_API_KEY"], "John", "Doe", "Manager")
