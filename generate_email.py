@@ -12,9 +12,10 @@ import base64
 import random
 from email.mime.text import MIMEText
 # Define the full path to the JSON file
-CONFIG_FILE = "./config.json"
-TOKEN_FILE = "./token.json"
-CREDENTIALS_FILE = "./credentials.json"
+CONFIG_FILE = "C:/Users/ilasv/gemini_email_sending_demo/config.json"
+TOKEN_FILE = "C:/Users/ilasv/gemini_email_sending_demo/token.json"
+CREDENTIALS_FILE = "C:/Users/ilasv/gemini_email_sending_demo/credentials.json"
+
 
 phishing_examples = [
     # {"Reason": "Account Suspicious Activity", "Fake Link": "http://landing-page.com", "Created By": "IT Security Alerts"},
@@ -22,10 +23,10 @@ phishing_examples = [
     # {"Reason": "Exclusive Training Webinar On ", "Fake Link": "http://landing-page.com", "Created By": "Richard Rascal"},
     # {"Reason": "Email Storage Full", "Fake Link": "http://landing-page.com", "Created By": "Mail Admin"},
     # {"Reason": "Gmail Blocked Login", "Fake Link": "http://landing-page.com", "Created By": "Account Recovery Team"},
-    {"Reason": "HR Policy Violation", "Fake Link": "http://landing-page.com", "Created By": "HR Department"},
-    {"Reason": "Microsoft Teams Missed Message", "Fake Link": "http://landing-page.com", "Created By": "Collaboration Support"},
-    {"Reason": "DocuSign Signature Request", "Fake Link": "http://landing-page.com", "Created By": "Document Sign Service"},
-    {"Reason": "Job Opportunity intern!!!", "Fake Link": "http://landing-page.com", "Created By": "Recruitment Team"}
+    {"Reason": "HR Policy Violation", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "HR Department"},
+    # {"Reason": "Microsoft Teams Missed Message", "Fake Link": "http://landing-page.com", "Created By": "Collaboration Support"},
+    {"Reason": "DocuSign Signature Request by compagne", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Document Sign Service"},
+    # {"Reason": "Job Opportunity intern!!!", "Fake Link": "http://landing-page.com", "Created By": "Recruitment Team"}
     # {"Reason": "Fake Meeting", "Fake Link": "http://landing-page.com", "Created By": "Meeting Coordinator"}
 ]
 
@@ -62,27 +63,54 @@ def initialize_genai(api_key):
 # Generate email content
 def generate_email_content(model, name, surname, position):
     # Take a random reason from phishing examples
+    global random_pick 
     random_pick = random.choice(phishing_examples)
 
     # Formulate the prompt, avoiding placeholders like [topic] and [date]
     # 
-    prompt = f"""Compose a professional email(well-crafted) from {random_pick["Created By"]} to {name} {surname}, who is a {position}. 
-    The email should address the following topic: {random_pick["Reason"]}.
-    The email should include the following elements:
-    - A clear explanation of why {random_pick['Reason']} is important 
-    - A specific call to action requiring the recipient to click this link:  {random_pick["Fake Link"]}
-    - Ensure the tone is professional, urgent if necessary, but not overly alarming to avoid suspicion.
+    prompt = f""""Compose a professional email from {random_pick["Created By"]} to {name} {surname}, who is a {position}, addressing the topic: {random_pick["Reason"]}.
 
-    Remember to:
-    - Use realistic and natural-sounding language throughout. Sound professional, persuasive, and urgent.
-    
-    - Make the email appear tailored specifically for the recipient: {name} {surname}
-    - Ensure the email is free of any grammatical errors or awkward phrasing.
-    - Only write the body of the email. Do not include headers or signatures.
-    - The email should be ready to be sent immediately. 
-    - Be free of placeholders like '[Date and Time]' or '[Target Audience]'.
-    - Be completely free of any brackets (e.g., '[]','()').
-    - Provide the email content directly. Do not include any additional instructions or formatting."""
+Structure the email as follows:
+
+Opening: A friendly yet professional greeting.
+Introduction: Briefly introduce the topic and why it is relevant to {name} {surname}.
+Explanation: Clearly and concisely explain the significance of {random_pick["Reason"]} in 2–3 sentences.
+Closing: End with a polite and actionable request that encourages {name} {surname} to respond or take the next step.
+Tone and Style:
+
+Professional, persuasive, and warm, with an optional hint of urgency (without being alarming).
+Use natural and realistic language tailored to the recipient's role as a {position}.
+Avoid overused words such as "crucial," "vital," "rare," or "urgent."
+Requirements:
+
+Use 75–100 words in total.
+Avoid placeholders (e.g., '[Date and Time]') and special formatting (e.g., brackets '[]', '()', or '* **')..
+Avoid references to links or phrases like "click here."
+Write only the body of the email, and ensure it is free of grammatical errors.
+Use varied sentence structures and vocabulary to create a polished, engaging, and professional email.
+ Do not include the subject in the body email.
+Signed, {random_pick["Created By"]}.
+"""
+#f"""Compose a professional and well-crafted email from {random_pick["Created By"]} to {name} {surname}, who is a {position}. The email should address the following topic: {random_pick["Reason"]}.
+
+# The email must include:
+
+# A clear explanation of why {random_pick['Reason']} is important, expressed in natural and realistic language.
+# A tone that is professional, persuasive, and just a little bet urgent (but not overly alarming to avoid suspicion).
+# A personalized touch tailored to the recipient: {name} {surname}.
+
+# Flawless grammar and smooth phrasing, avoiding awkward or unnatural expressions.
+# A word count of 75–100 words.
+# A subject line free of special characters (e.g., brackets or symbols).
+# Additional Conditions:
+
+# Avoid placeholders (e.g., '[Date and Time]') and special formatting (e.g., brackets '[]', '()', or '* **').
+# Do not include any reference to clicking links or similar actions.
+# Do not use words like "crucial," "vital," "rare," or "urgent."
+# Write only the body of the email, ensuring it is ready to send.
+# Do not include the subject in the body email.
+# Signed, {random_pick["Created By"]}
+# """
 
 
 
@@ -144,9 +172,73 @@ def main():
         position = recipient["position"]
 
         subject, body = generate_email_content(model, name, surname, position)
+        body = body.replace("\n", "<br>").replace("\n\n", "<p></p>")
         print(body)
+        css_styles = """
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-bottom: 1px solid #dddddd;
+        }
+        .email-header img {
+            max-width: 150px;
+            height: auto;
+        }
+        .email-body {
+            padding: 20px;
+            color: #333333;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #5C2D91;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #4b2377;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #888888;
+            background-color: #f4f4f4;
+            border-top: 1px solid #dddddd;
+        }
+    </style>
+"""
+
         message = create_message("me", email, subject,
-                              """
+                              f"""
 <!DOCTYPE html>
 <html>
 <head>
@@ -205,16 +297,16 @@ def main():
         <img alt="Company Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Proximus_logo_2014.svg/1280px-Proximus_logo_2014.svg.png" />
         </div>
         <div class="email-body">
-            {email_content}
+            {body}
             <p>{{.Tracker}}</p>
         </div>
         <div class="button-container">
-            <a href="#" class="button">Click Here</a>
+            <a href="{random_pick["Fake Link"]}" class="button">Click Here</a>
         </div>
     </div>
 </body>
 </html>
-""".format(email_content=body))
+""")
                                  
         send_message(service, "me", message)
 
