@@ -28,15 +28,16 @@ random_datetime = datetime.combine(random_date, datetime.min.time()) + timedelta
 
 def generate_email_content(api_key, first_name, last_name, position):
     phishing_examples = [
-    {"Reason": "Document Signature Required", "Link": "http://sign-docs.com", "Sender": "Document Services"},
-    {"Reason": "Announcing the launch of our new internal collaboration platform.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Follow-up on action items from the digital transformation workshop.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Sign up for the upcoming seminar on cybersecurity best practices.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Share your thoughts: Help us improve Proximus as a great place to work.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Planned network maintenance: Impact on internal systems this weekend.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Our roadmap for sustainability: Key initiatives for 2025.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Stay secure: Best practices for managing passwords.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"},
-    {"Reason": "Save the date: Proximus Charity Run 2025.", "Fake Link": "https://alkszo.github.io/security-training/login_proximus.html", "Created By": "Vera"}
+    {"Reason": "Document Signature Required", "Detailed_reason": "", "Link": "http://sign-docs.com", "Sender": "Document Services"},
+    {"Reason": "Announcing the launch of our new internal collaboration platform.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Follow-up on action items from the digital transformation workshop.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Sign up for the upcoming seminar on cybersecurity best practices.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Share your thoughts: Help us improve Proximus as a great place to work.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Planned network maintenance: Impact on internal systems this weekend.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Our roadmap for sustainability: Key initiatives for 2025.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Stay secure: Best practices for managing passwords.", "Detailed_reason": "","Sender": "Vera"},
+    {"Reason": "Save the date: Proximus Charity Run 2025.", "Detailed_reason": "Charity run organised by the receiver's employer which is Proximus","Sender": "Vera"},
+    {"Reason": "Save the date: Proximus Tour de Namur Cyclo 2025.", "Detailed_reason": "As a proximus employee, you can take part to this sport event for free","Sender": "Vera"}
 ]
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-pro")
@@ -48,7 +49,7 @@ Structure the email as follows:
 
 Opening: A friendly yet professional greeting.
 Introduction: Briefly introduce the topic and why it is relevant to {first_name} {last_name}.
-Explanation: Clearly and concisely explain the significance of {example["Reason"]} in 2–3 sentences.
+Explanation: Clearly and concisely explain the significance of {example["Reason"]}, and {example["Detailed_reason"]} in 2–3 sentences.
 Closing: End with a polite and actionable request that encourages {first_name} {last_name} to respond or take the next step.
 Tone and Style:
 
@@ -123,4 +124,4 @@ Signed, {example["Created By"]}.
 with open("config.json", "r") as config_file:
         config = json.load(config_file)
 
-generate = generate_email_content(config["gemini_api_key"], "John", "Doe", "Manager")
+generate = generate_email_content(config["GEMINI_API_KEY"], "John", "Doe", "Manager")
