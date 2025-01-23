@@ -2,9 +2,12 @@ from gophish import Gophish
 from gophish.models import SMTP, Page, Template, Campaign, User, Group
 import pandas as pd
 import json
+import landing_page
+import datetime
+import tzlocal
 
-#with open('config.json', 'r') as f:
-#    config = json.load(f)
+with open('config.json', 'r') as f:
+    config = json.load(f)
 
 
 class Gophish_Runner:
@@ -88,9 +91,30 @@ class Gophish_Runner:
     
         self.gophish_api.campaigns.post(campaign)
 
+    def schedule_campaign(self, name, template_name, page_name, sending_profile_name, group_name, delay):
+        launch_date = (datetime.datetime.now() + datetime.timedelta(days=delay)) 
+        launch_date = launch_date.replace(tzinfo=tzlocal.get_localzone())
+        campaign = Campaign(
+        name=name,
+        template=Template(name=template_name),
+        page = Page(name=page_name),
+        smtp=SMTP(name=sending_profile_name),
+        groups=[Group(name=group_name)],
+        url="http://127.0.0.1",
+        launch_date=launch_date 
+    )
+        self.gophish_api.campaigns.post(campaign)
+
     def clear_campaigns(self):
         for campaign in self.gophish_api.campaigns.get():
             self.gophish_api.campaigns.delete(campaign.id)
+
+    def clear_all(self):
+        self.clear_sending_profiles()
+        self.clear_landing_pages()
+        self.clear_email_templates()
+        self.clear_groups()
+        self.clear_campaigns()
 
     def get_results(self):
         self.results = None
@@ -106,3 +130,17 @@ class Gophish_Runner:
         self.results.to_csv(file_name, index=False)
 
     
+#test_instance = Gophish_Runner(config)
+#test_instance.create_sending_profile('test')
+#test_instance.create_landing_page('test', landing_page.generate_landing_page_html())
+
+#with open("job_opportunity.html", "r") as file:
+#    html_str = file.read()
+
+#test_instance.create_email_template('test', 'yo nab', html_str)
+#test_instance.create_group('test', 'Joe', 'Doe', 'aleksander.szostakowski@gmail.com', 'data janitor')
+
+#test_instance.schedule_campaign('schedule test', 'test', 'test', 'test', 'test', 2)
+#for campaign in test_instance.gophish_api.campaigns.get():
+#    print(campaign.launch_date)
+#    print(type(campaign.launch_date))

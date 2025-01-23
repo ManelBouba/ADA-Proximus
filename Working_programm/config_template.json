@@ -4,5 +4,8 @@
     "email_pass": "",
     "email_address": "",
     "host": "e.g. smtp.gmail.com:587",
-    "port": 587
+    "port": 587,
+    "schedule": false,
+    "schedule_delay": 14,
+    "schedule_repetitions": 3
 }
