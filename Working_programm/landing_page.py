@@ -1,4 +1,11 @@
 def generate_landing_page_html():
+    """
+    Generates the HTML content for a landing page.
+    This function returns a string containing the HTML structure for a sign-in page.
+    The page includes a form with fields for email and password, styled with embedded CSS.
+    Returns:
+        str: A string containing the HTML content for the landing page.
+    """
     landing_page = """
 <!DOCTYPE html>
 <html lang="en">

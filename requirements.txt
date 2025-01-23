@@ -1,0 +1,7 @@
+gophish
+pandas
+google-generativeai
+urllib3
+googletrans==4.0.0-rc1
+streamlit
+fastapi
