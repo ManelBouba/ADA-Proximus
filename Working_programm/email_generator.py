@@ -1,6 +1,8 @@
 import random
 import google.generativeai as genai
 from datetime import datetime, timedelta
+from googletrans import Translator
+
 
 
 # Generate a random date and time for the email
@@ -25,7 +27,7 @@ random_datetime = datetime.combine(random_date, datetime.min.time()) + timedelta
 
 
 
-def generate_email_content(api_key, first_name, last_name, position):
+def generate_email_content(api_key, first_name, last_name, position, language):
     phishing_examples = [
     {"Reason": "Document Signature Required", "Detailed_reason": "", "Link": "http://sign-docs.com", "Sender": "Document Services"},
     {"Reason": "Announcing the launch of our new internal collaboration platform.", "Detailed_reason": "","Sender": "Vera"},
@@ -65,9 +67,20 @@ Write only the body of the email, and ensure it is free of grammatical errors.
 Use varied sentence structures and vocabulary to create a polished, engaging, and professional email.
 Remeber that ou can change the subject line and the body of the email if you want to but Do not include the subject in the body email.
 Signed, {example["Sender"]}.
-
+The email should be in {language}
 """
     response = model.generate_content(prompt)
+    translator = Translator()
+    subject =example['Reason']
+    if language.lower() != "english":
+        response_text = translator.translate(response.text, dest=language).text
+        subject = translator.translate(example['Reason'], dest=language).text
+        
+    else:
+        response_text = response.text
+        subject = example['Reason'] 
+ 
+
 
     # Apply replacements to break the text into paragraphs and line breaks
     response = response.text.replace("\n\n", "</p><p>").replace("\n", "<br>")
@@ -116,7 +129,6 @@ Signed, {example["Sender"]}.
 
     # Insert the formatted content into the HTML template
     html_email = html_template.replace("{response_content}", response_text)
-    subject =example['Reason']
     return html_email, subject
 
 """
