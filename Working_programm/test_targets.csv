@@ -1,12 +1,12 @@
-name,last_name,position,email
-Sofie,Parys,Sales & Segment Strategy Manager,email_address
-Saransh,Goyal,Strategy,email_address
-Kristiaan,Vangeel,Manager Network Deployment,email_address
-Cindy Joly,Boyé,IT service delivery manager,email_address
-Zunaira,Zahid,Assistant Project Manager,email_address
-Carl,Ringoet,Product Owner,email_address
-Tom,Logghe,Team Manager eOperations,email_address
-Laetitia,Bastin,Account Manager,email_address
-Michel,Simonart,Head of Digital Ecosystems,email_address
-GEOFFREY,HARING,Service Delivery Manager,email_address
-,,,
+name,last_name,position,email,language
+Sofie,Parys,Sales & Segment Strategy Manager,wout.vanaert.visma@proton.me,french
+Saransh,Goyal,Strategy,remco.evenepoel.soudal@proton.me,dutch
+Kristiaan,Vangeel,Manager Network Deployment,tadej.pogacar.uae@proton.me,english
+Cindy Joly,Boyé,IT service delivery manager,arnaud.de.lie.lotto@proton.me,french
+Zunaira,Zahid,Assistant Project Manager,mathieu.vanderpoel.alpecin@proton.me,dutch
+Carl,Ringoet,Product Owner,julian.alaphilippe.tudor@proton.me,english
+Tom,Logghe,Team Manager eOperations,tom.pidcock.q365@proton.me,french
+Laetitia,Bastin,Account Manager,ben.oconnor.decathlon@proton.me,dutch
+Michel,Simonart,Head of Digital Ecosystems,jonas.vinegegaard.visma@proton.me,english
+GEOFFREY,HARING,Service Delivery Manager,victor.campenaerts@proton.me,french
+,,,,
