@@ -8,6 +8,42 @@ import json
 
 
 class Gophish_Runner:
+    """
+    A class to interact with the Gophish API for managing phishing campaigns.
+    Attributes:
+        GOPHISH_API_KEY (str): The API key for Gophish.
+        email_pass (str): The email password for the SMTP server.
+        email_address (str): The email address for the SMTP server.
+        host (str): The host for the SMTP server.
+        port (int): The port for the SMTP server.
+        gophish_api (Gophish): The Gophish API client.
+        results (pd.DataFrame): The DataFrame to store campaign results.
+    Methods:
+        create_sending_profile(name):
+            Creates a new sending profile in Gophish.
+        clear_sending_profiles():
+            Clears all sending profiles in Gophish.
+        create_landing_page(name, html_str):
+            Creates a new landing page in Gophish.
+        clear_landing_pages():
+            Clears all landing pages in Gophish.
+        create_email_template(name, subject, html_str):
+            Creates a new email template in Gophish.
+        clear_email_templates():
+            Clears all email templates in Gophish.
+        create_group(name, first_name, last_name, email, position):
+            Creates a new group in Gophish.
+        clear_groups():
+            Clears all groups in Gophish.
+        create_campaign(name, template_name, page_name, sending_profile_name, group_name):
+            Creates a new campaign in Gophish.
+        clear_campaigns():
+            Clears all campaigns in Gophish.
+        get_results():
+            Retrieves the results of all campaigns and stores them in a DataFrame.
+        export_results(file_name='results.csv'):
+            Exports the campaign results to a CSV file.
+    """
     def __init__(self, config):
         self.GOPHISH_API_KEY = config["GOPHISH_API_KEY"]
         self.email_pass = config["email_pass"]
