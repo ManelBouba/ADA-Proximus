@@ -10,6 +10,25 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 
 def main():
+    """
+    Main function to run the Gophish campaign automation.
+    This function performs the following steps:
+    1. Reads target data from a CSV file.
+    2. Initializes a Gophish instance with the provided configuration.
+    3. Clears existing sending profiles, landing pages, email templates, groups, and campaigns in Gophish.
+    4. Creates a new sending profile and landing page.
+    5. For each target (limited to the first target in this example):
+        - Generates email content using the email generator.
+        - Creates an email template in Gophish.
+        - Creates a group in Gophish.
+        - Creates a campaign in Gophish.
+    6. Prints a message indicating that the sending process is over.
+    Note: The code for retrieving and exporting results is commented out.
+    Args:
+        None
+    Returns:
+        None
+    """
     targets = file_reader.csv_reader('test_targets.csv')
     Gophish_Instance = Gophish_runner.Gophish_Runner(config)
     Gophish_Instance.clear_sending_profiles()
