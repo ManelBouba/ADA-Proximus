@@ -27,7 +27,7 @@ random_datetime = datetime.combine(random_date, datetime.min.time()) + timedelta
 
 
 
-def generate_email_content(api_key, first_name, last_name, position, language):
+def generate_email_content(api_key, first_name, last_name, position, language ='english'):
     phishing_examples = [
     {"Reason": "Document Signature Required", "Detailed_reason": "", "Link": "http://sign-docs.com", "Sender": "Document Services"},
     {"Reason": "Announcing the launch of our new internal collaboration platform.", "Detailed_reason": "","Sender": "Vera"},
