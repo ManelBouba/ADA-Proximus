@@ -22,8 +22,9 @@ def main():
         - Creates an email template in Gophish.
         - Creates a group in Gophish.
         - Creates a campaign in Gophish.
-    6. Prints a message indicating that the sending process is over.
-    Note: The code for retrieving and exporting results is commented out.
+    6. If the config file indicates scheduling, the programm will run campaigns for each recipient and then 
+    schedule following ones according to configuration which allows to set delay between campaigns (in days)
+    and the amount of sending repetitions
     Args:
         None
     Returns:
@@ -35,23 +36,23 @@ def main():
 
     Gophish_Instance.create_sending_profile('test')
     Gophish_Instance.create_landing_page('test', landing_page.generate_landing_page_html())
-    
+
     if config["schedule"] == True:
         for target in targets:
-            html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'])
+            html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'], target['language'])
             Gophish_Instance.create_email_template(f"{target['name']} {target['last_name']} {subject}", subject, html_email)
             Gophish_Instance.create_group(f"{target['name']} {target['last_name']}", target["name"], target['last_name'], config["email_address"], target['position'])
             Gophish_Instance.create_campaign(f"{target['name']} {target['last_name']} {subject}", f"{target['name']} {target['last_name']} {subject}", 'test', 'test', f"{target['name']} {target['last_name']}")
 
         for i in range(1, config["schedule_repetitions"]):
             for target in targets:
-                html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'])
+                html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'], target['language'])
                 Gophish_Instance.create_email_template(f"{target['name']} {target['last_name']} {subject} {i}", subject, html_email)
                 Gophish_Instance.schedule_campaign(f"{target['name']} {target['last_name']} {subject} {i}", f"{target['name']} {target['last_name']} {subject} {i}", 'test', 'test', f"{target['name']} {target['last_name']}", i * config["schedule_delay"])
 
     else:
         for target in targets:
-            html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'])
+            html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'], target['language'])
             Gophish_Instance.create_email_template(f"{target['name']} {target['last_name']} {subject}", subject, html_email)
             Gophish_Instance.create_group(f"{target['name']} {target['last_name']}", target["name"], target['last_name'], config["email_address"], target['position'])
             Gophish_Instance.create_campaign(f"{target['name']} {target['last_name']} {subject}", f"{target['name']} {target['last_name']} {subject}", 'test', 'test', f"{target['name']} {target['last_name']}")
