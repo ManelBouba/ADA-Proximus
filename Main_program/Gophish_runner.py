@@ -166,17 +166,3 @@ class Gophish_Runner:
         self.results.to_csv(file_name, index=False)
 
     
-#test_instance = Gophish_Runner(config)
-#test_instance.create_sending_profile('test')
-#test_instance.create_landing_page('test', landing_page.generate_landing_page_html())
-
-#with open("job_opportunity.html", "r") as file:
-#    html_str = file.read()
-
-#test_instance.create_email_template('test', 'yo nab', html_str)
-#test_instance.create_group('test', 'Joe', 'Doe', 'aleksander.szostakowski@gmail.com', 'data janitor')
-
-#test_instance.schedule_campaign('schedule test', 'test', 'test', 'test', 'test', 2)
-#for campaign in test_instance.gophish_api.campaigns.get():
-#    print(campaign.launch_date)
-#    print(type(campaign.launch_date))

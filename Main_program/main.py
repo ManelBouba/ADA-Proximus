@@ -1,7 +1,5 @@
 import Gophish_runner, landing_page, email_generator, file_reader
 import json
-import time
-import pandas as pd
 import urllib3
 urllib3.disable_warnings()
 
@@ -30,7 +28,7 @@ def main():
     Returns:
         None
     """
-    targets = file_reader.csv_reader('test_targets.csv')
+    targets = file_reader.csv_reader('test_targets2.csv')
     Gophish_Instance = Gophish_runner.Gophish_Runner(config)
     Gophish_Instance.clear_all()
 
@@ -41,7 +39,7 @@ def main():
         for target in targets:
             html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'], target['language'])
             Gophish_Instance.create_email_template(f"{target['name']} {target['last_name']} {subject}", subject, html_email)
-            Gophish_Instance.create_group(f"{target['name']} {target['last_name']}", target["name"], target['last_name'], config["email_address"], target['position'])
+            Gophish_Instance.create_group(f"{target['name']} {target['last_name']}", target["name"], target['last_name'], "proximus-ada-campaign@proton.me", target['position'])
             Gophish_Instance.create_campaign(f"{target['name']} {target['last_name']} {subject}", f"{target['name']} {target['last_name']} {subject}", 'test', 'test', f"{target['name']} {target['last_name']}")
 
         for i in range(1, config["schedule_repetitions"]):
@@ -54,8 +52,7 @@ def main():
         for target in targets:
             html_email, subject = email_generator.generate_email_content(config["GEMINI_API_KEY"], target["name"], target['last_name'], target['position'], target['language'])
             Gophish_Instance.create_email_template(f"{target['name']} {target['last_name']} {subject}", subject, html_email)
-            Gophish_Instance.create_group(f"{target['name']} {target['last_name']}", target["name"], target['last_name'], config["email_address"], target['position'])
+            Gophish_Instance.create_group(f"{target['name']} {target['last_name']}", target["name"], target['last_name'], "proximus-ada-campaign@proton.me", target['position'])
             Gophish_Instance.create_campaign(f"{target['name']} {target['last_name']} {subject}", f"{target['name']} {target['last_name']} {subject}", 'test', 'test', f"{target['name']} {target['last_name']}")
-
 
 main()
